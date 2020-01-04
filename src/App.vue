@@ -22,10 +22,13 @@ import {getStorage,saveStorage} from './utils/storageUtils'
       }
     },
     mounted(){
+      //在这里this代表当前组件，当前组件上没有$globalEventBus这个方法，会去与之对应的vm中去找，因为在入口文件中
+      //将$globalEventBus挂在了Vue的原型对象上，所以vm身上也没有，所以就去Vue原型上去找，最终找到
+      this.$globalEventBus.$on('deleteTodo',this.deleteTodo)
+      this.$refs.header.$on('addATodo',this.addTodo)
       setTimeout(()=>{
         this.todos = getStorage();
       },1000);
-      this.$refs.header.$on('addATodo',this.addTodo)
     },
     watch:{
       todos:{
@@ -52,6 +55,9 @@ import {getStorage,saveStorage} from './utils/storageUtils'
       },
       addTodo(todo){
         this.todos.unshift(todo);
+      },
+      deleteTodo(index){
+          this.todos.splice(index,1);
       }
     },
 

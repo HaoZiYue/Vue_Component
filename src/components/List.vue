@@ -1,6 +1,6 @@
 <template>
   <ul class="todo-main">
-    <Item v-for="(todo, index) in todos" :key="todo.id" :index='index' :todo='todo' :deleteTodo = 'deleteTodo'/>
+    <Item v-for="(todo, index) in todos" :key="todo.id" :index='index' :todo='todo'/>
     
   </ul>
 </template>
@@ -11,11 +11,6 @@ import Item from './Item';
     props:['todos'],
     components:{
       Item
-    },
-    methods:{
-      deleteTodo(index){
-          this.todos.splice(index,1);
-      }
     }
   }
 </script>

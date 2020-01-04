@@ -10,7 +10,7 @@
 
 <script type="text/ecmascript-6">
   export default {
-    props:['todo','index','deleteTodo'],
+    props:['todo','index'],
     data(){
       return {
         bgColor:'white',
@@ -30,7 +30,10 @@
       //因为Item里面找不到todos这个数组，所以只能调用当前组件的父组件出啊进来的方法来操作列表
       removeTodo(index){
         if(confirm('确定要删除吗？')){
-            this.deleteTodo(index)
+            // this.deleteTodo(index)
+            //$globalEventBus挂在了Vue的原型上，this代表当前组件，最后会找到Vue的原型身上
+            //可以实现任意组件之间通信
+            this.$globalEventBus.$emit('deleteTodo',this.index)
         }
           
       }
