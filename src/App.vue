@@ -3,7 +3,15 @@
     <div class="todo-wrap">
           <Header ref="header"/>
           <List :todos='todos'/>
-          <Footer :todos='todos' :checkAll='checkAll' :deleteAllTodo='deleteAllTodo'/>
+          <Footer :todos='todos'>
+            <input type="checkbox" v-model="this.isCheckAll"/>
+            <template slot="middle">
+                <span>
+                  <span>已完成{{this.finished}}</span> / 全部{{todos.length}}
+                </span>
+            </template>
+            <button slot="right" class="btn btn-danger" @click="deleteAll" v-show="finished>0">清除已完成任务</button>
+          </Footer>
     </div>
   </div>
 </template>
@@ -58,8 +66,27 @@ import {getStorage,saveStorage} from './utils/storageUtils'
       },
       deleteTodo(index){
           this.todos.splice(index,1);
+      },
+      //Footer组件的方法
+      deleteAll(){
+        if(confirm('确定要清除吗？')){
+          this.deleteAllTodo();
+        }
       }
     },
+     computed:{
+      finished(){
+        return this.todos.reduce((pre,todo)=> pre + (todo.complete?1:0),0)
+      },
+      isCheckAll:{
+        get(){
+          return this.todos.length === this.finished && this.finished>0
+        },
+        set(value){
+          this.checkAll(value)
+        }
+      },
+    }
 
 
   }

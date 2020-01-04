@@ -1,39 +1,25 @@
 <template>
   <div class="todo-footer">
     <label>
-      <input type="checkbox" v-model="isCheckAll"/>
+      <!-- <input type="checkbox" v-model="isCheckAll"/> -->
+      <slot></slot>
     </label>
-    <span>
+    <!-- <span>
       <span>已完成{{finished}}</span> / 全部{{todos.length}}
-    </span>
-    <button class="btn btn-danger" @click="deleteAll" v-show="finished>0">清除已完成任务</button>
+    </span> -->
+    <slot name="middle"></slot> <!-- 命名插槽 -->
+    <!-- <button class="btn btn-danger" @click="deleteAll" v-show="finished>0">清除已完成任务</button> -->
+    <slot name="right"></slot> <!-- 命名插槽 -->
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   export default {
-    props:['todos','checkAll','deleteAllTodo'],
+    // props:['todos','checkAll','deleteAllTodo'],
     methods:{
-      deleteAll(){
-        if(confirm('确定要清除吗？')){
-          this.deleteAllTodo();
-        }
-      }
-    },
-    computed:{
-      finished(){
-        return this.todos.reduce((pre,todo)=> pre + (todo.complete?1:0),0)
-      },
-      isCheckAll:{
-        get(){
-          return this.todos.length === this.finished && this.finished>0
-        },
-        set(value){
-          this.checkAll(value)
-        }
-      },
       
-    }
+    },
+   
   }
 </script>
 
