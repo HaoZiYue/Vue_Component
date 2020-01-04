@@ -6,7 +6,7 @@
 
 <script type="text/ecmascript-6">
   export default {
-    props:['todos'],
+    // props:['todos'],
     data(){
       return {
         title:'',
@@ -18,7 +18,9 @@
           return
         }
         const title = this.title.trim();
-        this.todos.unshift({id:Date.now(),title:title,complete:false});
+        // this.todos.unshift({id:Date.now(),title:title,complete:false});
+        //通过自定义监听来传递数据，实现子传给祖先数据
+        this.$emit('addATodo',{id:Date.now(),title:title,complete:false})
         this.title = ''
       }
     }

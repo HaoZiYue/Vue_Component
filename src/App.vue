@@ -1,7 +1,7 @@
 <template>
   <div class="todo-container">
     <div class="todo-wrap">
-          <Header :todos='todos'/>
+          <Header ref="header"/>
           <List :todos='todos'/>
           <Footer :todos='todos' :checkAll='checkAll' :deleteAllTodo='deleteAllTodo'/>
     </div>
@@ -12,6 +12,7 @@
 import Header from './components/Header'
 import List from './components/List'
 import Footer from './components/Footer'
+import {getStorage,saveStorage} from './utils/storageUtils'
   export default {
     data(){
       return {
@@ -22,16 +23,18 @@ import Footer from './components/Footer'
     },
     mounted(){
       setTimeout(()=>{
-        this.todos = JSON.parse(localStorage.getItem('todos_key') || "[]")
-      },1000)
+        this.todos = getStorage();
+      },1000);
+      this.$refs.header.$on('addATodo',this.addTodo)
     },
     watch:{
       todos:{
         deep: true, // 深度监视
-        handler (value) { // value是最新的todos
-          // 保存最新的todos到local, 必须以json形式
-          localStorage.setItem('todos_key', JSON.stringify(value))
-        }
+        // handler (value) { // value是最新的todos
+        //   // 保存最新的todos到local, 必须以json形式
+        //  saveStorage(value)
+        // }
+        handler:saveStorage
       }
     },
     //注册局部组件，只能在当前组件内有效
@@ -46,6 +49,9 @@ import Footer from './components/Footer'
       },
       deleteAllTodo(){
         this.todos = this.todos.filter((todo)=>todo.complete===false)
+      },
+      addTodo(todo){
+        this.todos.unshift(todo);
       }
     },
 
