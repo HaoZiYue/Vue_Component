@@ -1,11 +1,13 @@
+import '@babel/polyfill'
 import Vue from 'vue' ;
 import App from './App';
-import router from './router'
+
 
 Vue.config.productionTip = false
 new Vue({
     el: '#root',
     render: h => h(App),
-    //注册路由
-    router,
+    beforeCreate() {
+        Vue.prototype.$globalEventBus = this
+    },
 })
